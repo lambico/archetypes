@@ -29,7 +29,6 @@ import org.springframework.transaction.annotation.Transactional;
  * A BO to be used for the tests of the generic DAO.
  *
  * @author <a href="mailto:lucio@benfante.com">Lucio Benfante</a>
- * @version ${symbol_dollar}Revision: a8d8760b3552 ${symbol_dollar}
  */
 @Service
 public class PersonBo {

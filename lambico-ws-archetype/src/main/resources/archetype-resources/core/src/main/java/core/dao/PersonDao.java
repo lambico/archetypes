@@ -18,7 +18,6 @@ import ${package}.core.po.Person;
  * The DAO interface for the Person entity.
  *
  * @author <a href="mailto:lucio@benfante.com">Lucio Benfante</a>
- * @version ${symbol_dollar}Revision: ae7fb2fab619 ${symbol_dollar}
  */
 @Dao(entity = Person.class)
 public interface PersonDao extends GenericDao<Person, Long> {

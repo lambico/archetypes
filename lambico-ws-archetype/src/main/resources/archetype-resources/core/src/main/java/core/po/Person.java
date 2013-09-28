@@ -20,7 +20,6 @@ import ${groupId}.po.hibernate.EntityBase;
  * An example of a persistent object containing personal data.
  *
  * @author <a href="mailto:lucio@benfante.com">Lucio Benfante</a>
- * @version ${symbol_dollar}Revision: ae7fb2fab619 ${symbol_dollar}
  */
 @javax.persistence.Entity
 @XmlRootElement
