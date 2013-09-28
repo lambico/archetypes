@@ -1,0 +1,34 @@
+#
+# Copyright (C) 2013 Lambico Team <info@lambico.org>
+#
+# This file is part of Lambico WS Archetype Template - Core.
+#
+
+- &Person-lucio
+  firstName: Lucio
+  lastName: Benfante
+  birthDate: 1971-03-26
+- &Person-ugo
+  firstName: Ugo
+  lastName: Benfante
+  birthDate: 1943-02-06
+- &Person-guido
+  firstName: Guido
+  lastName: Benfante
+  birthDate: 1973-10-28
+- &Person-chiara
+  firstName: Chiara
+  lastName: Benfante
+  birthDate: 1972-07-31
+- &Person-Carlo
+  firstName: Carlo
+  lastName: Benfante
+  birthDate: 2004-10-17
+- &Person-Silvia
+  firstName: Silvia
+  lastName: Benfante
+  birthDate: 2006-08-13
+- &Person-Filippo
+  firstName: Filippo
+  lastName: Benfante
+  birthDate: 1973-05-11

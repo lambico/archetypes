@@ -1,0 +1,70 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (C) 2013 Lambico Team <info@lambico.org>
+
+    This file is part of Lambico WS Archetype Template - Server.
+
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:security="http://www.springframework.org/schema/security"       
+       xmlns:jaxws="http://cxf.apache.org/jaxws"
+       xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+       xmlns:cxf="http://cxf.apache.org/core"
+       xsi:schemaLocation=" http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                            http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd
+                            http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd
+                            http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd
+                            http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd">
+
+    <import resource="classpath:META-INF/cxf/cxf.xml" />
+    
+    <jaxrs:server id="sampleRESTService" address="/secured" publishedEndpointUrl="http://localhost:38080/${rootArtifactId}/secured">
+        <jaxrs:features>
+            <cxf:logging/>
+        </jaxrs:features>
+        <jaxrs:providers>
+            <bean class="${package}.core.security.AuthenticationHandler">
+                <!--<property name="authServiceClient" ref="authServiceClient"/>-->
+            </bean>
+            <bean class="com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider"/>
+            <bean class="${package}.core.security.SecurityExceptionMapper"/>
+        </jaxrs:providers>    
+        <jaxrs:serviceBeans>
+            <ref bean="sampleRestService" />
+        </jaxrs:serviceBeans>
+    </jaxrs:server>
+        
+    <bean id="sampleRestService" class="${package}.core.rest.SampleService"/>
+    
+    <security:global-method-security secured-annotations="enabled">
+        <security:protect-pointcut expression="execution(* ${package}.core.rest.SampleService.*(..))" access="ROLE_DEFAULT"/>
+        <!--        
+                <security:protect-pointcut expression="execution(* demo.jaxrs.service.CustomerService.addCustomer(*))" access="ROLE_ADMIN"/>
+                <security:protect-pointcut expression="execution(* demo.jaxrs.service.CustomerService.updateCustomer(Long,demo.jaxrs.service.Customer))" access="ROLE_ADMIN"/>
+                <security:protect-pointcut expression="execution(* demo.jaxrs.service.CustomerService.deleteCustomer(*))" access="ROLE_ADMIN"/>
+                <security:protect-pointcut expression="execution(* demo.jaxrs.service.CustomerService.getOrder(*))" access="ROLE_CUSTOMER, ROLE_ADMIN"/>
+        -->        
+    </security:global-method-security>
+    <security:http auto-config="true" use-expressions="true">
+        <security:http-basic/>
+    </security:http>
+    <security:authentication-manager>
+        <security:authentication-provider user-service-ref="userDetailsService">
+            <security:password-encoder hash="md5">
+                <security:salt-source user-property="username"/>
+            </security:password-encoder>
+        </security:authentication-provider>
+    </security:authentication-manager>
+
+    <bean id="userDetailsService" class="${package}.core.security.ClientUserDetailsService">
+        <property name="authServiceClient" ref="authServiceClient"/>
+    </bean>
+
+    <bean id="authServiceClient" class="${package}.core.security.FakeAuthService"/>
+
+</beans>

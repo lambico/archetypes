@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (C) 2013 Lambico Team <info@lambico.org>
+
+    This file is part of Lambico WS Archetype Template - Server.
+
+-->
+<Context antiJARLocking="true" path="/lambico-ws-archetype-template">
+</Context>

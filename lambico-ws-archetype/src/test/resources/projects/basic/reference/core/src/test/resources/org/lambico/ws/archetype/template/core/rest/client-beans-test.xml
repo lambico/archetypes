@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (C) 2013 Lambico Team <info@lambico.org>
+
+    This file is part of Lambico WS Archetype Template - Core.
+
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:security="http://www.springframework.org/schema/security"       
+       xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+       xmlns:cxf="http://cxf.apache.org/core"
+       xsi:schemaLocation="
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd
+        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd
+        http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd">
+        
+    <bean id="sampleRestService" class="org.lambico.ws.archetype.template.core.rest.SampleService"/>
+    
+    <bean id="securityFilter" class="org.lambico.ws.archetype.template.core.security.SecurityCXFJAXRSFilter">
+        <property name="users">
+            <map>
+                <entry key="username">
+                    <bean class="org.lambico.ws.archetype.template.core.security.User">
+                        <property name="username" value="username"/>
+                        <property name="password" value="password"/>
+                        <property name="accountNonExpired" value="true"/>
+                        <property name="accountNonLocked" value="true"/>
+                        <property name="credentialsNonExpired" value="true"/>
+                        <property name="enabled" value="true"/>
+                        <property name="authorities">
+                            <set>
+                                <bean class="org.springframework.security.core.authority.SimpleGrantedAuthority">
+                                    <constructor-arg value="ROLE_DEFAULT"/>
+                                </bean>
+                            </set>
+                        </property>
+                    </bean>
+                </entry>
+            </map>
+        </property>
+    </bean>
+
+</beans>
