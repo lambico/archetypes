@@ -10,8 +10,8 @@ package ${package}.core.dao;
 
 import java.util.Date;
 import java.util.List;
-import ${groupId}.dao.generic.Dao;
-import ${groupId}.dao.generic.GenericDao;
+import org.lambico.dao.generic.Dao;
+import org.lambico.dao.generic.GenericDao;
 import ${package}.core.po.Person;
 
 /**

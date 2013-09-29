@@ -28,7 +28,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.SecurityContext;
-import ${groupId}.dao.generic.Page;
+import org.lambico.dao.generic.Page;
 import ${package}.core.bean.PaginatedResult;
 import ${package}.core.bo.PersonBo;
 import ${package}.core.dao.PersonDao;

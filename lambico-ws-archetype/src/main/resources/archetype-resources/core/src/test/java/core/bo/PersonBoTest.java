@@ -11,9 +11,9 @@ package ${package}.core.bo;
 import java.util.List;
 import javax.annotation.Resource;
 import org.junit.Test;
-import ${groupId}.dao.generic.Page;
-import ${groupId}.test.spring.hibernate.junit4.AbstractBaseTest;
-import ${groupId}.test.spring.hibernate.junit4.FixtureSet;
+import org.lambico.dao.generic.Page;
+import org.lambico.test.spring.hibernate.junit4.AbstractBaseTest;
+import org.lambico.test.spring.hibernate.junit4.FixtureSet;
 import ${package}.core.dao.PersonDao;
 import ${package}.core.po.Person;
 

@@ -10,7 +10,7 @@ package ${package}.core.bean;
 
 import java.util.Collections;
 import java.util.List;
-import ${groupId}.dao.generic.Page;
+import org.lambico.dao.generic.Page;
 
 /**
  * Bean for managing list paginations.
