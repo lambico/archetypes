@@ -1,2 +1,5 @@
 syntag: regexp
 ^lambico-ws-archetype/target
+^lambico-ws-archetype/src/test/resources/projects/basic/reference/server/nb-configuration\.xml$
+^lambico-ws-archetype/src/test/resources/projects/basic/reference/core/target
+^lambico-ws-archetype/src/test/resources/projects/basic/reference/server/target
