@@ -43,6 +43,7 @@
 
     <security:global-method-security secured-annotations="enabled">
         <security:protect-pointcut expression="execution(* org.lambico.ws.archetype.template.core.rest.SampleService.*(..))" access="ROLE_DEFAULT"/>
+        <security:protect-pointcut expression="execution(* org.lambico.ws.archetype.template.core.rest.PersonService.*(..))" access="ROLE_DEFAULT"/>
         <!--        
                 <security:protect-pointcut expression="execution(* demo.jaxrs.service.CustomerService.addCustomer(*))" access="ROLE_ADMIN"/>
                 <security:protect-pointcut expression="execution(* demo.jaxrs.service.CustomerService.updateCustomer(Long,demo.jaxrs.service.Customer))" access="ROLE_ADMIN"/>
