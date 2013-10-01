@@ -33,11 +33,14 @@
         </jaxrs:providers>    
         <jaxrs:serviceBeans>
             <ref bean="sampleRestService" />
+            <ref bean="personRestService" />
         </jaxrs:serviceBeans>
     </jaxrs:server>
         
     <bean id="sampleRestService" class="org.lambico.ws.archetype.template.core.rest.SampleService"/>
-    
+
+    <bean id="personRestService" class="org.lambico.ws.archetype.template.core.rest.PersonService"/>
+
     <security:global-method-security secured-annotations="enabled">
         <security:protect-pointcut expression="execution(* org.lambico.ws.archetype.template.core.rest.SampleService.*(..))" access="ROLE_DEFAULT"/>
         <!--        

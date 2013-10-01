@@ -21,9 +21,6 @@ import org.apache.cxf.transport.local.LocalConduit;
 import org.junit.After;
 import org.junit.Before;
 import org.lambico.test.spring.hibernate.junit4.AbstractBaseTest;
-import org.lambico.test.spring.hibernate.junit4.FixtureSet;
-import org.lambico.ws.archetype.template.core.po.Person;
-import org.lambico.ws.archetype.template.core.rest.SampleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
@@ -34,7 +31,6 @@ import org.springframework.test.context.ContextConfiguration;
  * @author Lucio Benfante <lucio@benfante.com>
  */
 @ContextConfiguration(locations = {"/org/lambico/ws/archetype/template/core/rest/client-beans-test.xml"})
-@FixtureSet(modelClasses = {Person.class})
 public abstract class BaseRSTest extends AbstractBaseTest {
 
     public static final String DEFAULT_ACCEPT_TYPE = "application/xml";
@@ -93,10 +89,10 @@ public abstract class BaseRSTest extends AbstractBaseTest {
         return client;
     }
 
-    protected SampleService createProxyClient(String endpointAddress, String username, String password, String acceptType) {
+    protected <T> T createProxyClient(Class<T> resourceClass, String endpointAddress, String username, String password, String acceptType) {
         List<Object> providers = new ArrayList<Object>();
         providers.add(new JacksonJaxbJsonProvider());
-        SampleService proxy = JAXRSClientFactory.create(endpointAddress, SampleService.class, providers);
+        T proxy = JAXRSClientFactory.create(endpointAddress, resourceClass, providers);
         Client client = WebClient.client(proxy);
         configureClient(client, username, password, acceptType);
         return proxy;

@@ -19,7 +19,6 @@ import org.apache.cxf.jaxrs.lifecycle.ResourceProvider;
 import org.apache.cxf.jaxrs.lifecycle.SingletonResourceProvider;
 import org.junit.Test;
 import org.lambico.ws.archetype.template.core.bean.PaginatedResult;
-import org.lambico.ws.archetype.template.core.bean.StringResult;
 import org.lambico.ws.archetype.template.core.po.Person;
 import org.lambico.ws.archetype.template.core.test.BaseRSTest;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -29,20 +28,21 @@ import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import org.lambico.test.spring.hibernate.junit4.FixtureSet;
+import org.lambico.ws.archetype.template.core.bean.ItemResult;
 
 /**
- * Test the REST SampleService.
+ * Test the REST PersonService.
  *
  * @author Lucio Benfante <lucio@benfante.com>
  */
 @FixtureSet(modelClasses = {Person.class})
-public class SampleServiceTest extends BaseRSTest {
+public class PersonServiceTest extends BaseRSTest {
 
-    public static final String ENDPOINT_ADDRESS = "local://RestSampleService";
+    public static final String ENDPOINT_ADDRESS = "local://RestPersonService";
     public static final String DEFAULT_USERNAME = "username";
     public static final String DEFAULT_PASSWORD = "password";
     @Resource
-    private SampleService sampleService;
+    private PersonService personService;
 
     @Override
     protected String getServerEndpointAddress() {
@@ -52,127 +52,117 @@ public class SampleServiceTest extends BaseRSTest {
     @Override
     protected List<Class<?>> getServerResourceClasses() {
         List<Class<?>> result = new LinkedList<Class<?>>();
-        result.add(SampleService.class);
+        result.add(PersonService.class);
         return result;
     }
 
     @Override
     protected List<ResourceProvider> getServerResourceProviders() {
         List<ResourceProvider> result = new LinkedList<ResourceProvider>();
-        result.add(new SingletonResourceProvider(sampleService, true));
+        result.add(new SingletonResourceProvider(personService, true));
         return result;
     }
-    
-    /**
-     * Test of hello method, of class SampleService.
-     */
-    @Test
-    public void testHello() {
-        WebClient client = createWebClient(ENDPOINT_ADDRESS, DEFAULT_USERNAME, DEFAULT_PASSWORD, null);
-        String message = "prova";
-        client.path("/sample/hello/" + message);
-        StringResult result = client.get(StringResult.class);
-        assertThat(result.getContent(), equalTo("Hello, " + DEFAULT_USERNAME + ": " + message));
-    }
 
     /**
-     * Test of getPersons method, of class SampleService.
+     * Test of getItems method, of class PersonService.
      */
     @Test
-    public void testGetPersons() {
-        SampleService client = createProxyClient(SampleService.class, ENDPOINT_ADDRESS, DEFAULT_USERNAME, DEFAULT_PASSWORD, null);
-        PaginatedResult<Person> persons = client.getPersons(null, null);
+    public void testGetItems() {
+        PersonService client = createProxyClient(PersonService.class, ENDPOINT_ADDRESS, DEFAULT_USERNAME, DEFAULT_PASSWORD, null);
+        PaginatedResult<Person> persons = client.getItems(null, null);
         assertThat(persons.getItems(), hasSize(7));
     }
 
     /**
-     * Test of getPersons method, of class SampleService.
+     * Test of getItems method, of class PersonService.
      */
     @Test
-    public void testJsonGetPersons() throws IOException {
+    public void testJsonGetItems() throws IOException {
         WebClient client = createWebClient(ENDPOINT_ADDRESS, DEFAULT_USERNAME, DEFAULT_PASSWORD, MediaType.APPLICATION_JSON);
-        client.path("/sample/persons");
-        String result = client.get().readEntity(String.class);        
+        client.path("/persons");
+        String result = client.get().readEntity(String.class);
         ObjectMapper mapper = new ObjectMapper();
-        PaginatedResult<Person> persons = mapper.readValue(result, new TypeReference<PaginatedResult<Person>>(){});
+        PaginatedResult<Person> persons = mapper.readValue(result, new TypeReference<PaginatedResult<Person>>() {
+        });
         assertThat(persons.getItems(), hasSize(7));
     }
 
     /**
-     * Test of getPerson method, of class SampleService.
+     * Test of getItem method, of class PersonService.
      */
     @Test
-    public void testGetPerson() {
-        SampleService client = createProxyClient(SampleService.class, ENDPOINT_ADDRESS, DEFAULT_USERNAME, DEFAULT_PASSWORD, null);
-        PaginatedResult<Person> persons = client.getPersons(null, null);
+    public void testGetItem() {
+        PersonService client = createProxyClient(PersonService.class, ENDPOINT_ADDRESS, DEFAULT_USERNAME, DEFAULT_PASSWORD, null);
+        PaginatedResult<Person> persons = client.getItems(null, null);
         Person person1 = persons.getItems().get(0);
-        Person person2 = client.getPerson(person1.getId());
+        Person person2 = client.getItem(person1.getId().toString()).getItem();
         assertThat(person2, is(not(nullValue())));
         assertThat(person2.getId(), equalTo(person1.getId()));
     }
 
     /**
-     * Test of getPerson method, of class SampleService.
+     * Test of getItem method, of class PersonService.
      */
     @Test
-    public void testJsonGetPerson() throws IOException {
+    public void testJsonGetItem() throws IOException {
         WebClient client = createWebClient(ENDPOINT_ADDRESS, DEFAULT_USERNAME, DEFAULT_PASSWORD, MediaType.APPLICATION_JSON);
-        client.path("/sample/persons");
-        String result = client.get().readEntity(String.class);        
+        client.path("/persons");
+        String result = client.get().readEntity(String.class);
         ObjectMapper mapper = new ObjectMapper();
-        PaginatedResult<Person> persons = mapper.readValue(result, new TypeReference<PaginatedResult<Person>>(){});
+        PaginatedResult<Person> persons = mapper.readValue(result, new TypeReference<PaginatedResult<Person>>() {
+        });
         Person person1 = persons.getItems().get(0);
-        client.back(true).path("/sample/persons/{id}", person1.getId());
-        result = client.get().readEntity(String.class);        
-        Person person2 = mapper.readValue(result, Person.class);
+        client.back(true).path("/persons/{id}", person1.getId());
+        result = client.get().readEntity(String.class);
+        ItemResult<Person> irPerson2 = mapper.readValue(result, new TypeReference<ItemResult<Person>>() {
+        });
+        Person person2 = irPerson2.getItem();
         assertThat(person2, is(not(nullValue())));
         assertThat(person2.getId(), equalTo(person1.getId()));
     }
-    
+
     /**
-     * Test of deletePerson method, of class SampleService.
+     * Test of deleteItem method, of class PersonService.
      */
     @Test
-    public void testDeletePerson() {
-        SampleService client = createProxyClient(SampleService.class, ENDPOINT_ADDRESS, DEFAULT_USERNAME, DEFAULT_PASSWORD, null);
-        PaginatedResult<Person> persons = client.getPersons(null, null);
+    public void testDeleteItem() {
+        PersonService client = createProxyClient(PersonService.class, ENDPOINT_ADDRESS, DEFAULT_USERNAME, DEFAULT_PASSWORD, null);
+        PaginatedResult<Person> persons = client.getItems(null, null);
         Person person = persons.getItems().get(0);
-        Response response = client.deletePerson(person.getId());
+        Response response = client.deleteItem(person.getId().toString());
         assertThat(response.getStatus(), equalTo(Response.Status.OK.getStatusCode()));
         try {
-            Person deletedPerson = client.getPerson(person.getId());
+            Person deletedPerson = client.getItem(person.getId().toString()).getItem();
         } catch (BadRequestException e) {
             assertThat(e.getResponse().getStatus(), equalTo(Response.Status.BAD_REQUEST.getStatusCode()));
         }
     }
 
     /**
-     * Test of addPerson method, of class SampleService.
+     * Test of addItem method, of class PersonService.
      */
     @Test
-    public void testAddPerson() {
-        SampleService client = createProxyClient(SampleService.class, ENDPOINT_ADDRESS, DEFAULT_USERNAME, DEFAULT_PASSWORD, null);
+    public void testAddItem() {
+        PersonService client = createProxyClient(PersonService.class, ENDPOINT_ADDRESS, DEFAULT_USERNAME, DEFAULT_PASSWORD, null);
         Person newPerson = new Person();
         newPerson.setFirstName("New");
         newPerson.setLastName("Person");
-        client.addPerson(newPerson);
-        PaginatedResult<Person> persons = client.getPersons(null, null);
+        client.addItem(newPerson);
+        PaginatedResult<Person> persons = client.getItems(null, null);
         assertThat(persons.getItems(), hasSize(8));
     }
 
     /**
-     * Test of updatePerson method, of class SampleService.
+     * Test of updateItem method, of class PersonService.
      */
     @Test
-    public void testUpdatePerson() {
-        SampleService client = createProxyClient(SampleService.class, ENDPOINT_ADDRESS, DEFAULT_USERNAME, DEFAULT_PASSWORD, null);
-        PaginatedResult<Person> persons = client.getPersons(null, null);
+    public void testUpdateItem() {
+        PersonService client = createProxyClient(PersonService.class, ENDPOINT_ADDRESS, DEFAULT_USERNAME, DEFAULT_PASSWORD, null);
+        PaginatedResult<Person> persons = client.getItems(null, null);
         Person person = persons.getItems().get(0);
         person.setFirstName("Updated");
-        client.updatePerson(person);
-        Person updatedPerson = client.getPerson(person.getId());
+        client.updateItem(person);
+        Person updatedPerson = client.getItem(person.getId().toString()).getItem();
         assertThat(updatedPerson.getFirstName(), equalTo("Updated"));
     }
-
-
 }

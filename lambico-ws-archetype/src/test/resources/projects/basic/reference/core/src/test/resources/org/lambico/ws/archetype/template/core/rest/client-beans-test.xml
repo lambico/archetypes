@@ -18,7 +18,9 @@
         http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd">
         
     <bean id="sampleRestService" class="org.lambico.ws.archetype.template.core.rest.SampleService"/>
-    
+
+    <bean id="personRestService" class="org.lambico.ws.archetype.template.core.rest.PersonService"/>
+
     <bean id="securityFilter" class="org.lambico.ws.archetype.template.core.security.SecurityCXFJAXRSFilter">
         <property name="users">
             <map>

@@ -8,6 +8,7 @@
  */
 package ${package}.core.bean;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
@@ -34,6 +35,7 @@ public class PaginatedResult<T> {
 
     @XmlElement(name = "item")
     @XmlElementWrapper(name = "items")
+    @JsonProperty("item")
     public List<T> getItems() {
         return items;
     }

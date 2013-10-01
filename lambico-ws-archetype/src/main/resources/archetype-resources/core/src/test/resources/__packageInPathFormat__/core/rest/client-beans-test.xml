@@ -21,7 +21,9 @@
         http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd">
         
     <bean id="sampleRestService" class="${package}.core.rest.SampleService"/>
-    
+
+    <bean id="personRestService" class="${package}.core.rest.PersonService"/>
+
     <bean id="securityFilter" class="${package}.core.security.SecurityCXFJAXRSFilter">
         <property name="users">
             <map>
